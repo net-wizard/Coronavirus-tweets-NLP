@@ -1,11 +1,12 @@
-from fastapi import FastAPI
-import pickle
-from typing import Optional
-import uvicorn
-import numpy as np
-import pandas as pd
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+import pandas as pd
+import warnings
+import pickle
+filename="finalized_model.pkl"
+model=pickle.load(open(filename,"rb"))
+import numpy as np
+warnings.filterwarnings('ignore')
 
 def clean(df):
 
@@ -23,7 +24,8 @@ def clean(df):
     #regular cleaning
 
     # remove punctuation
-    df['t'] = df['t'].astype(str).str.replace(r'[^\w\d\s]', ' ')
+    df['t'] = df['t'].astype(
+    str).str.replace(r'[^\w\d\s]', ' ')
 
     # replace multiple spaces with single space in between text
     df['t'] = df['t'].str.replace(r'\s+', ' ')
@@ -48,18 +50,16 @@ def clean(df):
 
     return df['t']
 
-app = FastAPI()
-filename="finalized_model.pkl"
-model=pickle.load(open(filename,"rb"))
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
 
-@app.get("/predict/{tweet}")
-def prediction(tweet):
-    df = pd.DataFrame([[tweet]], columns=list('t'))
-    CleanTweet = clean(df)
-    CleanTweet = CleanTweet.astype(str).str.strip()
-    result = model.predict(CleanTweet)
-    result = np.array_str(result)
-    return {"prediction": result}
+def prediction(text):
+    df = pd.DataFrame([[text]], columns=list('t'))
+    tweet=clean(df)
+    tweet = tweet.astype(str).str.strip()
+    print(tweet) 
+    result = model.predict(tweet)
+    return result
+
+while True:
+    var = input("Text: ")
+    print(prediction(var))
+    print("press ctrl+c to stop else give input after Text:")
