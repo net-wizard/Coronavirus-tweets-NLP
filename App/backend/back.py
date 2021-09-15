@@ -63,7 +63,7 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/predict/{tweet}")
+@app.post("/predict/{tweet}")
 def prediction(tweet):
     df = pd.DataFrame([[tweet]], columns=list('t'))
     CleanTweet = clean(df)
