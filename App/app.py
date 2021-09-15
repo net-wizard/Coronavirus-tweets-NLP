@@ -7,20 +7,23 @@ import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
+
 def clean(df):
 
-    #custom cleaning
+    # custom cleaning
 
-    #urls
-    df['t'] = df['t'].replace(r'http\S+', ' ', regex=True).replace(r'www\S+', ' ', regex=True)
+    # urls
+    df['t'] = df['t'].replace(
+        r'http\S+', ' ', regex=True).replace(r'www\S+', ' ', regex=True)
 
-    #@mention
+    # @mention
     df['t'] = df['t'].replace(r'@[A-Za-z0-9]+', ' ', regex=True)
 
-    #Emoji
-    df['t'] = df['t'].apply(lambda x: [y.encode('ascii', 'ignore').decode('ascii') for y in x.split()])
+    # Emoji
+    df['t'] = df['t'].apply(
+        lambda x: [y.encode('ascii', 'ignore').decode('ascii') for y in x.split()])
 
-    #regular cleaning
+    # regular cleaning
 
     # remove punctuation
     df['t'] = df['t'].astype(str).str.replace(r'[^\w\d\s]', ' ')
@@ -31,7 +34,7 @@ def clean(df):
     # change to lower case
     df['t'] = df['t'].astype(str).str.lower()
 
-    #remove numbers
+    # remove numbers
     df['t'] = df['t'].astype(str).str.replace(r'\d+', ' ')
 
     # remove stopwords
@@ -40,7 +43,8 @@ def clean(df):
     stop.append('yorkers')
     stop.append('york')
     stop.append('newyork')
-    df['t'] = df['t'].apply(lambda x: [item for item in x.split() if item not in stop])
+    df['t'] = df['t'].apply(
+        lambda x: [item for item in x.split() if item not in stop])
 
     # Lemmatizing
     lemmatizer = WordNetLemmatizer()
@@ -48,12 +52,16 @@ def clean(df):
 
     return df['t']
 
+
 app = FastAPI()
-filename="finalized_model.pkl"
-model=pickle.load(open(filename,"rb"))
+filename = "finalized_model.pkl"
+model = pickle.load(open(filename, "rb"))
+
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
 
 @app.get("/predict/{tweet}")
 def prediction(tweet):
