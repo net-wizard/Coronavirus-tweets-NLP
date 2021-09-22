@@ -13,4 +13,4 @@ Tweet Example
 ****
 Prediction
 
-![Prediction](/Data/Screenshot%20from%202021-09-20%2012-04-13.png)
+![Prediction](/Data/Screenshot%20from%202021-09-22%2012-02-13.png)
