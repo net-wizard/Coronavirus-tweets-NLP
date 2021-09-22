@@ -4,7 +4,7 @@ import requests
 
 st.title("Corona tweet sentiment analysis app")
 
-st.write("Takes tweet about corona virus cleans it analyse it and gives output positive, negative or nutral as a output")
+st.write("Takes tweet about corona virus cleans it analyse it and gives positive, negative or nutral as a output")
 
 tweet=st.text_area("Paste a tweet")
 
